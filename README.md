@@ -21,7 +21,7 @@ Before you begin, ensure you have the following installed:
 
 ### Navigate to the project directory:
 
-1. cd visitors-management-app
+1. cd vmsapp
 
 ### Building the Frontend
 
