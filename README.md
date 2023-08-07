@@ -8,7 +8,7 @@ Welcome to the Visitors Management App! This application allows you to efficient
 
 Before you begin, ensure you have the following installed:
 
-- Node.js (v14 or later)
+- Node.js (v16.16 or later)
 - npm (Node Package Manager)
 
 ### Installation and Setup
