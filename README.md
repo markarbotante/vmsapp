@@ -33,10 +33,15 @@ Before you begin, ensure you have the following installed:
 
 1. cd ../server
 2. npm install
-3. npm start
+3. copy and replace the server/ .env values. i shared the file in the email
+4. npm start
 
 ### Accessing the App
 
 Once the server is up and running, you can access the Visitors Management App by opening a web browser and navigating to the following URL:
 
 http://localhost:8080/visitors/management
+
+Login 
+username: admin
+password: P@sSw0rd
