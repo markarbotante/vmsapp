@@ -1,6 +1,7 @@
 const rekuire = require("rekuire");
 const async = require("async");
 
+const Auth = require(process.cwd() + "/middlewares/auth");
 const TestController = rekuire("GenericController");
 
 const router = {
@@ -31,6 +32,7 @@ const router = {
           },
         },
       },
+      middlewares: [Auth.validateApp],
       handler: (req, res, next) => {
         var _test = new TestController(req);
 
@@ -82,6 +84,7 @@ const router = {
           },
         },
       },
+      middlewares: [Auth.validateApp],
       handler: (req, res, next) => {
         var _test = new TestController(req);
 
@@ -131,6 +134,7 @@ const router = {
           },
         },
       },
+      middlewares: [Auth.validateApp],
       handler: (req, res, next) => {
         var _test = new TestController(req);
 
