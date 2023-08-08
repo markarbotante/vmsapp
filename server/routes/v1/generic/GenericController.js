@@ -49,8 +49,8 @@ TestController.prototype.samplePost = function (cb, result) {
     contact: rawBody.contact, // Assuming you have a 'contact' field
     purpose: rawBody.purpose,
     vehicleOrWalk: rawBody.selectedOption,
-    status: true
-  }
+    status: true,
+  };
 
   if (!body.firstName || !body.lastName || !body.contact || !body.purpose || !body.vehicleOrWalk) {
     let errors = Errors.raise("MISSING_INVALID_PARAMS");
@@ -71,7 +71,7 @@ TestController.prototype.samplePost = function (cb, result) {
         let errors = Errors.raise("MISSING_INVALID_PARAMS");
         return cb(errors, null);
       }
-      return cb(null, { message: "Successfully added a visitor" });
+      return cb(null, { message: "Successfully registed a visitor" });
     })
     .catch((error) => {
       let errors = Errors.raise("INTERNAL_SERVER_ERROR");
@@ -81,14 +81,13 @@ TestController.prototype.samplePost = function (cb, result) {
     });
 };
 
-
 TestController.prototype.samplePut = function (cb, result) {
   const rawBody = this.req.body || {};
- 
+
   let body = {
     transactionId: rawBody.transactionId,
-    status: rawBody.status
-  }
+    status: rawBody.status,
+  };
 
   if (!body.transactionId) {
     let errors = Errors.raise("MISSING_INVALID_PARAMS");
@@ -104,7 +103,7 @@ TestController.prototype.samplePut = function (cb, result) {
         let errors = Errors.raise("MISSING_INVALID_PARAMS");
         return cb(errors, null);
       }
-      return cb(null, { message: "successfully updated a transaction" });
+      return cb(null, { message: "Successfully updated a visitor" });
     })
     .catch((error) => {
       let errors = Errors.raise("INTERNAL_SERVER_ERROR");
