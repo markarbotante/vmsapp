@@ -6,6 +6,30 @@
           <strong>Register</strong> <small>new visitor</small>
         </CCardHeader>
         <CCardBody>
+          <CAlert
+            color="success"
+            :visible="successAlert"
+            dismissible
+            @close="
+              () => {
+                successAlert = false
+              }
+            "
+          >
+            {{ successMessage }}</CAlert
+          >
+          <CAlert
+            color="warning"
+            :visible="errorAlert"
+            dismissible
+            @close="
+              () => {
+                errorAlert = false
+              }
+            "
+          >
+            {{ errorMessage }}</CAlert
+          >
           <CInputGroup class="mb-3">
             <CFormSelect
               v-model="selectedOption"
@@ -54,6 +78,30 @@
           <strong>Dashboard</strong> <small>statistics & check out</small>
         </CCardHeader>
         <CCardBody>
+          <CAlert
+            color="success"
+            :visible="successTAlert"
+            dismissible
+            @close="
+              () => {
+                successTAlert = false
+              }
+            "
+          >
+            {{ successMessage }}</CAlert
+          >
+          <CAlert
+            color="warning"
+            :visible="errorTAlert"
+            dismissible
+            @close="
+              () => {
+                errorTAlert = false
+              }
+            "
+          >
+            {{ errorMessage }}</CAlert
+          >
           <CInputGroup class="mb-3">
             <CFormInput
               v-model="filterValue"
@@ -184,6 +232,7 @@
 
 <script>
 import axios from 'axios'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Tables',
@@ -200,10 +249,18 @@ export default {
       sortKey: '',
       sortOrder: 'asc',
       filterValue: '',
+      successAlert: false,
+      successTAlert: false,
+      successMessage: '',
+      errorAlert: false,
+      errorTAlert: false,
+      errorMessage: '',
     }
   },
   methods: {
     async registerVisitor() {
+      this.checkAuthTimeout()
+      const config = this.createAuthConfig()
       try {
         const formData = {
           firstName: this.firstname,
@@ -212,37 +269,46 @@ export default {
           purpose: this.purpose,
           selectedOption: this.selectedOption,
         }
-        const response = await axios.post('/v1/api', formData)
-        alert(response)
+        const response = await axios.post('/v1/api', formData, config)
         this.retrieveVisitor()
         this.currentPage = 1
+        this.successAlert = true
+        this.successMessage = response.data.message
       } catch (error) {
-        alert(error)
-        console.error('API error:', error)
+        this.errorAlert = true
+        this.errorMessage =
+          'Registration failed, ' + error.response.data.errors[0].message
       }
     },
     async retrieveVisitor() {
+      const config = this.createAuthConfig()
       try {
-        const response = await axios.get('/v1/api')
-        console.log(response)
-        this.visitors = response.data.records
+        const response = await axios.get('/v1/api', config)
+        if (response.data.records.length > 0) {
+          this.visitors = response.data.records
+        }
         this.currentPage = 1
       } catch (error) {
         console.error('API error:', error)
       }
     },
     async updateVisitor(id) {
+      this.checkAuthTimeout()
+      const config = this.createAuthConfig()
       try {
         const formData = {
           transactionId: id,
           status: 0,
         }
-        const response = await axios.put('/v1/api', formData)
-        console.log(response)
+        const response = await axios.put('/v1/api', formData, config)
         this.retrieveVisitor()
         this.currentPage = 1
+        this.successTAlert = true
+        this.successMessage = response.data.message
       } catch (error) {
-        console.error('API error:', error)
+        this.errorTAlert = true
+        this.errorMessage = 'Failed to updated a visitor'
+        console.error('API error:', error.message)
       }
     },
     sortTable(key) {
@@ -265,11 +331,33 @@ export default {
         this.currentPage = page
       }
     },
+    ...mapActions(['checkAuthenticationTimeout']),
+    async checkAuthTimeout() {
+      await this.checkAuthenticationTimeout()
+      if (!this.isAuthenticated) {
+        this.$router.push('/pages/login')
+        alert('session is already over. please relogin first')
+      }
+    },
+    createAuthConfig() {
+      const clientId = process.env.VUE_APP_FE_CLIENT_ID
+      const clientSecret = process.env.VUE_APP_FE_CLIENT_SECRET
+
+      return {
+        headers: {
+          'X-Client-Id': clientId,
+          'X-Client-Secret': clientSecret,
+          'Content-Type': 'application/json',
+        },
+      }
+    },
   },
   created() {
     this.retrieveVisitor()
+    this.checkAuthTimeout()
   },
   computed: {
+    ...mapGetters(['isAuthenticated']),
     getStatusLabel() {
       return (status) => (status === 1 ? 'IN' : 'OUT')
     },

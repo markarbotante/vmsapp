@@ -64,4 +64,16 @@ const router = createRouter({
   },
 })
 
+// Navigation guard
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true'
+
+  if (to.name !== 'Login' && !isAuthenticated) {
+    // If the user is not logged in and is trying to access a protected route
+    next({ name: 'Login' }) // Redirect to login page
+  } else {
+    next() // Continue navigation
+  }
+})
+
 export default router
