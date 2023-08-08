@@ -109,99 +109,103 @@
               aria-label="Search"
             />
           </CInputGroup>
-          <CTable>
-            <CTableHead color="dark">
-              <CTableRow>
-                <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                <CTableHeaderCell
-                  scope="col"
-                  @click="sortTable('firstName')"
-                  :class="{ sortable: sortKey === 'firstName' }"
-                >
-                  First Name
-                  <span v-if="sortKey === 'firstName'" class="sort-arrow">
-                    {{ sortOrder === 'asc' ? '▲' : '▼' }}
-                  </span>
-                </CTableHeaderCell>
-                <CTableHeaderCell
-                  scope="col"
-                  @click="sortTable('lastName')"
-                  :class="{ sortable: sortKey === 'lastName' }"
-                >
-                  Last Name
-                  <span v-if="sortKey === 'lastName'" class="sort-arrow">
-                    {{ sortOrder === 'asc' ? '▲' : '▼' }}
-                  </span>
-                </CTableHeaderCell>
-                <CTableHeaderCell
-                  scope="col"
-                  @click="sortTable('contact')"
-                  :class="{ sortable: sortKey === 'contact' }"
-                >
-                  Contact
-                  <span v-if="sortKey === 'contact'" class="sort-arrow">
-                    {{ sortOrder === 'asc' ? '▲' : '▼' }}
-                  </span>
-                </CTableHeaderCell>
-                <CTableHeaderCell
-                  scope="col"
-                  @click="sortTable('purpose')"
-                  :class="{ sortable: sortKey === 'purpose' }"
-                >
-                  Purpose
-                  <span v-if="sortKey === 'purpose'" class="sort-arrow">
-                    {{ sortOrder === 'asc' ? '▲' : '▼' }}
-                  </span>
-                </CTableHeaderCell>
-                <CTableHeaderCell
-                  scope="col"
-                  @click="sortTable('vehicleOrWalk')"
-                  :class="{ sortable: sortKey === 'vehicleOrWalk' }"
-                >
-                  Vehicle/Walk-in
-                  <span v-if="sortKey === 'vehicleOrWalk'" class="sort-arrow">
-                    {{ sortOrder === 'asc' ? '▲' : '▼' }}
-                  </span>
-                </CTableHeaderCell>
-                <CTableHeaderCell
-                  scope="col"
-                  @click="sortTable('status')"
-                  :class="{ sortable: sortKey === 'status' }"
-                >
-                  Status
-                  <span v-if="sortKey === 'status'" class="sort-arrow">
-                    {{ sortOrder === 'asc' ? '▲' : '▼' }}
-                  </span>
-                </CTableHeaderCell>
-                <CTableHeaderCell scope="col">Action </CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-              <CTableRow
-                v-for="(visitor, index) in paginatedVisitors"
-                :key="index"
-              >
-                <CTableHeaderCell scope="row">{{ index + 1 }}</CTableHeaderCell>
-                <CTableDataCell>{{ visitor.firstName }}</CTableDataCell>
-                <CTableDataCell>{{ visitor.lastName }}</CTableDataCell>
-                <CTableDataCell>{{ visitor.contact }}</CTableDataCell>
-                <CTableDataCell>{{ visitor.purpose }}</CTableDataCell>
-                <CTableDataCell>{{ visitor.vehicleOrWalk }}</CTableDataCell>
-                <CTableDataCell>
-                  {{ getStatusLabel(visitor.status) }}
-                </CTableDataCell>
-                <CTableDataCell>
-                  <CButton
-                    @click="updateVisitor(visitor.transactionId)"
-                    color="warning"
-                    :disabled="visitor.status === 0"
+          <div class="responsive-table">
+            <CTable>
+              <CTableHead color="dark">
+                <CTableRow>
+                  <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    @click="sortTable('firstName')"
+                    :class="{ sortable: sortKey === 'firstName' }"
                   >
-                    OUT
-                  </CButton>
-                </CTableDataCell>
-              </CTableRow>
-            </CTableBody>
-          </CTable>
+                    First Name
+                    <span v-if="sortKey === 'firstName'" class="sort-arrow">
+                      {{ sortOrder === 'asc' ? '▲' : '▼' }}
+                    </span>
+                  </CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    @click="sortTable('lastName')"
+                    :class="{ sortable: sortKey === 'lastName' }"
+                  >
+                    Last Name
+                    <span v-if="sortKey === 'lastName'" class="sort-arrow">
+                      {{ sortOrder === 'asc' ? '▲' : '▼' }}
+                    </span>
+                  </CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    @click="sortTable('contact')"
+                    :class="{ sortable: sortKey === 'contact' }"
+                  >
+                    Contact
+                    <span v-if="sortKey === 'contact'" class="sort-arrow">
+                      {{ sortOrder === 'asc' ? '▲' : '▼' }}
+                    </span>
+                  </CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    @click="sortTable('purpose')"
+                    :class="{ sortable: sortKey === 'purpose' }"
+                  >
+                    Purpose
+                    <span v-if="sortKey === 'purpose'" class="sort-arrow">
+                      {{ sortOrder === 'asc' ? '▲' : '▼' }}
+                    </span>
+                  </CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    @click="sortTable('vehicleOrWalk')"
+                    :class="{ sortable: sortKey === 'vehicleOrWalk' }"
+                  >
+                    Vehicle/Walk-in
+                    <span v-if="sortKey === 'vehicleOrWalk'" class="sort-arrow">
+                      {{ sortOrder === 'asc' ? '▲' : '▼' }}
+                    </span>
+                  </CTableHeaderCell>
+                  <CTableHeaderCell
+                    scope="col"
+                    @click="sortTable('status')"
+                    :class="{ sortable: sortKey === 'status' }"
+                  >
+                    Status
+                    <span v-if="sortKey === 'status'" class="sort-arrow">
+                      {{ sortOrder === 'asc' ? '▲' : '▼' }}
+                    </span>
+                  </CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Action </CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+                <CTableRow
+                  v-for="(visitor, index) in paginatedVisitors"
+                  :key="index"
+                >
+                  <CTableHeaderCell scope="row">{{
+                    index + 1
+                  }}</CTableHeaderCell>
+                  <CTableDataCell>{{ visitor.firstName }}</CTableDataCell>
+                  <CTableDataCell>{{ visitor.lastName }}</CTableDataCell>
+                  <CTableDataCell>{{ visitor.contact }}</CTableDataCell>
+                  <CTableDataCell>{{ visitor.purpose }}</CTableDataCell>
+                  <CTableDataCell>{{ visitor.vehicleOrWalk }}</CTableDataCell>
+                  <CTableDataCell>
+                    {{ getStatusLabel(visitor.status) }}
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <CButton
+                      @click="updateVisitor(visitor.transactionId)"
+                      color="warning"
+                      :disabled="visitor.status === 0"
+                    >
+                      OUT
+                    </CButton>
+                  </CTableDataCell>
+                </CTableRow>
+              </CTableBody>
+            </CTable>
+          </div>
           <CPagination align="end" aria-label="Page navigation example">
             <CPaginationItem
               v-if="currentPage !== 1"
@@ -403,3 +407,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.responsive-table {
+  overflow-x: auto;
+}
+</style>
