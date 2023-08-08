@@ -27,7 +27,8 @@ Before you begin, ensure you have the following installed:
 
 1. cd admin
 2. npm install
-3. npm run build
+3. copy and replace the admin/ .env values. i shared the file in the email
+4. npm run build
 
 ### Running the Server and Rendering Frontend
 
