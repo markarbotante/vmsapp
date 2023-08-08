@@ -255,6 +255,7 @@ export default {
       errorAlert: false,
       errorTAlert: false,
       errorMessage: '',
+      dismissTimer: null,
     }
   },
   methods: {
@@ -273,12 +274,17 @@ export default {
         this.retrieveVisitor()
         this.currentPage = 1
         this.successAlert = true
-        this.successMessage = response.data.message
+        this.successMessage = response?.data?.message
       } catch (error) {
         this.errorAlert = true
-        this.errorMessage =
-          'Registration failed, ' + error.response.data.errors[0].message
+        this.errorMessage = 'Registration failed'
       }
+      this.dismissTimer = setTimeout(() => {
+        this.successAlert = false
+        this.successMessage = ''
+        this.errorAlert = false
+        this.errorMessage = ''
+      }, 5000)
     },
     async retrieveVisitor() {
       const config = this.createAuthConfig()
@@ -310,6 +316,12 @@ export default {
         this.errorMessage = 'Failed to updated a visitor'
         console.error('API error:', error.message)
       }
+      this.dismissTimer = setTimeout(() => {
+        this.successTAlert = false
+        this.successMessage = ''
+        this.errorTAlert = false
+        this.errorMessage = ''
+      }, 5000)
     },
     sortTable(key) {
       if (this.sortKey === key) {
